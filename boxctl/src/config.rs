@@ -412,7 +412,7 @@ impl Config {
     }
 
     pub fn uses_runtime_config(&self) -> bool {
-        matches!(self.bin_name.as_str(), "mihomo" | "sing-box" | "hysteria")
+        core_uses_runtime_config(&self.bin_name)
     }
 
     pub fn launch_config_path(&self) -> &Path {
@@ -426,6 +426,10 @@ impl Config {
 
 fn runtime_config_file_path(paths: &BoxPaths) -> PathBuf {
     paths.state.join("startup-config")
+}
+
+fn core_uses_runtime_config(bin_name: &str) -> bool {
+    matches!(bin_name, "mihomo" | "sing-box")
 }
 
 #[cfg(test)]
@@ -446,6 +450,15 @@ mod tests {
             runtime_config_file_path(&paths),
             PathBuf::from("/box/run/state/startup-config")
         );
+    }
+
+    #[test]
+    fn only_mihomo_and_sing_box_use_runtime_config() {
+        assert!(core_uses_runtime_config("mihomo"));
+        assert!(core_uses_runtime_config("sing-box"));
+        assert!(!core_uses_runtime_config("hysteria"));
+        assert!(!core_uses_runtime_config("xray"));
+        assert!(!core_uses_runtime_config("v2fly"));
     }
 }
 

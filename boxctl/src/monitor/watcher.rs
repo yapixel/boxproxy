@@ -20,7 +20,7 @@ pub(super) fn monitor_worker(config: &Config, runner: &Runner) -> Result<()> {
                 let live_config = load_live_config(config);
                 logger::warn_key(
                     &live_config,
-                    LogKey::WifiMonitorRestarted,
+                    LogKey::NetworkMonitorRetrying,
                     &[arg("error", err)],
                 )
             }
@@ -77,7 +77,7 @@ pub(super) fn stop_monitor_worker(config: &Config, runner: &Runner) -> Result<()
         return Ok(());
     }
 
-    logger::info_key(config, LogKey::WifiMonitorStopped, &[]);
+    logger::info_key(config, LogKey::NetworkMonitorStopped, &[]);
     signal_monitor_process_group(runner, identity.pid, SIGTERM);
     for _ in 0..20 {
         if !monitor_identity_matches(&identity) {
@@ -155,7 +155,7 @@ pub(super) fn spawn_monitor_worker(config: &Config) -> Result<()> {
 
     command
         .spawn()
-        .map_err(|err| format!("start Wi-Fi monitor failed: {err}"))?;
+        .map_err(|err| format!("start network monitor failed: {err}"))?;
     Ok(())
 }
 

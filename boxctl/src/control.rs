@@ -19,7 +19,7 @@ fn up_inner(config: &Config, runner: &Runner, manage_monitor: bool) -> Result<()
         log_startup_failed(config, &err);
         return Err(err);
     }
-
+    
     let (service_result, rules_result) = thread::scope(|scope| {
         let rules_handle = scope.spawn(|| rules::apply(config, runner));
         let service_result = service::start(config, runner);
@@ -134,7 +134,7 @@ pub fn restart(config: &Config, runner: &Runner) -> Result<()> {
             arg("mode", &config.network_mode),
         ],
     );
-    down(config, runner)?;
+    down_inner(config, runner, false)?;
     up(config, runner)
 }
 

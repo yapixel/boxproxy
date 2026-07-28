@@ -45,6 +45,13 @@ cd boxbpf
 make           # or: clang -O2 -fPIE -pie main.c loader.c config.c -o boxbpf
 ```
 
+## Releases
+
+Run **Publish Runtime Tools** from the GitHub Actions tab to create a release.
+Provide a semantic version and select the tools to build. Each release contains
+the selected `arm64-v8a` binaries, `SHA256SUMS`, and `BUILD_INFO` with the
+source commit and build target.
+
 ## License
 
 This project is licensed under the **GNU General Public License v3.0**
